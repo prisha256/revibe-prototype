@@ -1,103 +1,111 @@
-import Image from "next/image";
+'use client'; // Required for animations and user interactions
 
-export default function Home() {
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { FaShoppingBag, FaCut, FaTags } from 'react-icons/fa';
+
+// --- Navbar Component ---
+// Defined right here for simplicity.
+const Navbar = () => {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <header className="fixed top-0 left-0 w-full bg-background/80 backdrop-blur-sm z-50 border-b border-border">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          <Link href="/" className="text-3xl font-sans font-extrabold text-primary hover:opacity-75 transition-opacity">
+            ReVibe
+          </Link>
+          <div className="flex items-center space-x-8">
+            <a href="#" className="text-secondary hover:text-primary transition-colors duration-300 font-semibold">
+              Reviews
+            </a>
+            <button className="bg-accent text-white font-bold py-2 px-6 rounded-full hover:scale-105 transition-transform">
+              Add to Closet
+            </button>
+          </div>
         </div>
+      </nav>
+    </header>
+  );
+};
+
+// --- Footer Component ---
+const Footer = () => {
+  return (
+    <footer className="bg-surface border-t border-border">
+      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
+        <p className="text-base text-secondary">© {new Date().getFullYear()} ReVibe. All Rights Reserved.</p>
+      </div>
+    </footer>
+  );
+};
+
+// --- MAIN HOMEPAGE ---
+export default function PrototypePage() {
+  return (
+    // We use a React Fragment <>...</> to return multiple elements
+    <>
+      <Navbar />
+      <main className="pt-20">
+        
+        {/* Hero Section */}
+        <section className="relative w-full h-[50vh] flex flex-col items-center justify-center text-center overflow-hidden px-4">
+          <motion.h1
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-5xl md:text-7xl font-sans font-extrabold text-primary z-10"
+          >
+            Your Endless Wardrobe.
+          </motion.h1>
+          <motion.p
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mt-6 max-w-2xl text-lg text-secondary z-10"
+          >
+            Rent designer pieces, customize your fit, and give your pre-loved items a new life.
+          </motion.p>
+        </section>
+
+        {/* --- The Three Keyword Cards Section --- */}
+        <section className="w-full max-w-6xl mx-auto py-16 px-4">
+            <div className="grid md:grid-cols-3 gap-8">
+                
+                {/* Card 1: Book & Wear */}
+                <div className="bg-surface p-8 rounded-xl border border-border flex flex-col text-left hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                    <FaShoppingBag className="text-3xl text-accent mb-5" />
+                    <h3 className="text-2xl font-sans font-bold mb-3 text-primary">Book & Wear</h3>
+                    <p className="text-secondary mb-6 flex-grow">Access a curated collection of high-quality fashion for any event. Why buy when you can borrow?</p>
+                    <a href="#" className="font-bold text-accent self-start hover:underline">
+                        Start Renting →
+                    </a>
+                </div>
+
+                {/* Card 2: Customize */}
+                <div className="bg-surface p-8 rounded-xl border border-border flex flex-col text-left hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                    <FaCut className="text-3xl text-accent mb-5" />
+                    <h3 className="text-2xl font-sans font-bold mb-3 text-primary">Customize</h3>
+                    <p className="text-secondary mb-6 flex-grow">(Coming Soon) Our expert tailoring service will offer alterations to make every piece feel perfectly yours.</p>
+                     <a href="#" className="font-bold text-gray-400 self-start cursor-not-allowed">
+                        Learn More →
+                    </a>
+                </div>
+
+                {/* Card 3: Resell */}
+                <div className="bg-surface p-8 rounded-xl border border-border flex flex-col text-left hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                    <FaTags className="text-3xl text-accent mb-5" />
+                    <h3 className="text-2xl font-sans font-bold mb-3 text-primary">Resell</h3>
+                    <p className="text-secondary mb-6 flex-grow">Turn your unworn items into income. Our White Glove service makes it effortless to list and manage your closet.</p>
+                     <a href="#" className="font-bold text-accent self-start hover:underline">
+                        Become a Partner →
+                    </a>
+                </div>
+
+            </div>
+        </section>
+        
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      <Footer />
+    </>
   );
 }
