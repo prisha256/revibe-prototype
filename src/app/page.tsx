@@ -1,111 +1,246 @@
-'use client'; // Required for animations and user interactions
+// src/app/page.tsx
 
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { FaShoppingBag, FaCut, FaTags } from 'react-icons/fa';
+// This is our CSS. We are writing it directly inside our file.
+const styles = `
+  /* --- Global Styles & Font Imports --- */
+  @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&display=swap');
 
-// --- Navbar Component ---
-// Defined right here for simplicity.
-const Navbar = () => {
-  return (
-    <header className="fixed top-0 left-0 w-full bg-background/80 backdrop-blur-sm z-50 border-b border-border">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          <Link href="/" className="text-3xl font-sans font-extrabold text-primary hover:opacity-75 transition-opacity">
-            ReVibe
-          </Link>
-          <div className="flex items-center space-x-8">
-            <a href="#" className="text-secondary hover:text-primary transition-colors duration-300 font-semibold">
-              Reviews
-            </a>
-            <button className="bg-accent text-white font-bold py-2 px-6 rounded-full hover:scale-105 transition-transform">
-              Add to Closet
-            </button>
-          </div>
-        </div>
-      </nav>
-    </header>
-  );
-};
+  :root {
+    /* --- The "Warm & Elegant" Palette --- */
+    --bg-color: #f5f2ed;         /* A more prominent, warm beige */
+    --surface-color: #FFFFFF;     /* Clean white for cards */
+    --text-color: #3D3D3D;      /* Soft, dark charcoal */
+    --heading-color: #000000;     /* Black for headings */
+    --accent-color: #e5a9b4;      /* A slightly more saturated, warm pink */
+    --highlight-color: #009B77;  /* Emerald Green */
+    --border-color: #EAEAEA;
+    --illustration-bg: #e9e9e9; /* Grey for the background illustrations */
+  }
 
-// --- Footer Component ---
-const Footer = () => {
-  return (
-    <footer className="bg-surface border-t border-border">
-      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
-        <p className="text-base text-secondary">© {new Date().getFullYear()} ReVibe. All Rights Reserved.</p>
-      </div>
-    </footer>
-  );
-};
+  body {
+    background-color: var(--bg-color);
+    font-family: 'Lora', serif; /* Lora font for everything */
+    color: var(--text-color);
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-// --- MAIN HOMEPAGE ---
+  /* --- Navbar Styles --- */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(245, 242, 237, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 50;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+  }
+  .nav-logo {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--heading-color);
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  .nav-link {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-color);
+    text-decoration: none;
+  }
+  .nav-button {
+    background-color: var(--accent-color);
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .nav-button:hover {
+    filter: brightness(1.1);
+  }
+
+  /* --- Main Content & Hero Section --- */
+  .main-content {
+    padding-top: 80px;
+  }
+  .hero-section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 1.5rem;
+    overflow: hidden;
+  }
+  .hero-text-content {
+    position: relative;
+    z-index: 10;
+  }
+  .hero-title {
+    font-size: 52px;
+    font-weight: 600;
+    color: var(--heading-color);
+    margin: 0;
+  }
+  .hero-subtitle {
+    font-size: 17px;
+    max-width: 500px;
+    margin-top: 12px;
+  }
+
+  /* --- Background illustrations container --- */
+  .illustrations-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  .illustration {
+    position: absolute;
+    background-color: var(--illustration-bg);
+    border-radius: 12px;
+    opacity: 0.7;
+  }
+  .illustration-1 { top: -20%; left: 15%; transform: rotate(-15deg); width: 200px; height: 250px; }
+  .illustration-2 { top: 10%; right: 10%; transform: rotate(10deg); width: 250px; height: 180px; }
+  .illustration-3 { bottom: -30%; left: 25%; transform: rotate(5deg); width: 180px; height: 220px; }
+  .illustration-4 { bottom: -10%; right: 20%; transform: rotate(-8deg); width: 200px; height: 250px; }
+
+
+  /* --- Cards Section --- */
+  .cards-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem 4rem 1.5rem;
+  }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .card {
+    background-color: var(--surface-color);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  }
+  .card-icon {
+    font-size: 24px;
+    color: var(--highlight-color);
+    margin-bottom: 12px;
+  }
+  .card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--heading-color);
+    margin: 0 0 12px 0;
+  }
+  .card-link {
+    font-weight: bold;
+    color: var(--highlight-color);
+    text-decoration: none;
+    margin-top: auto;
+  }
+
+  /* --- Footer Styles --- */
+  .footer {
+    display: none; 
+  }
+
+  /* Responsive styles for mobile */
+  @media (max-width: 768px) {
+    .cards-grid { grid-template-columns: 1fr; }
+    .hero-title { font-size: 36px; }
+    .nav-links { display: none; }
+    .illustration { display: none; }
+    .footer { display: block; }
+  }
+`;
+
 export default function PrototypePage() {
   return (
-    // We use a React Fragment <>...</> to return multiple elements
     <>
-      <Navbar />
-      <main className="pt-20">
-        
-        {/* Hero Section */}
-        <section className="relative w-full h-[50vh] flex flex-col items-center justify-center text-center overflow-hidden px-4">
-          <motion.h1
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-5xl md:text-7xl font-sans font-extrabold text-primary z-10"
-          >
-            Your Endless Wardrobe.
-          </motion.h1>
-          <motion.p
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="mt-6 max-w-2xl text-lg text-secondary z-10"
-          >
-            Rent designer pieces, customize your fit, and give your pre-loved items a new life.
-          </motion.p>
+      <style>{styles}</style>
+
+      <header className="navbar">
+        <nav className="nav-container">
+          <a href="/" className="nav-logo">ReVibe</a>
+          <div className="nav-links">
+            <a href="#" className="nav-link">Reviews</a>
+            <button className="nav-button">Add to Closet</button>
+          </div>
+        </nav>
+      </header>
+
+      <main className="main-content">
+        <section className="hero-section">
+          <div className="illustrations-container">
+            <div className="illustration illustration-1"></div>
+            <div className="illustration illustration-2"></div>
+            <div className="illustration illustration-3"></div>
+            <div className="illustration illustration-4"></div>
+          </div>
+          <div className="hero-text-content">
+            <h1 className="hero-title">Your Endless Wardrobe.</h1>
+            <p className="hero-subtitle">Rent, customize, and give your pre-loved items a new life.</p>
+          </div>
         </section>
 
-        {/* --- The Three Keyword Cards Section --- */}
-        <section className="w-full max-w-6xl mx-auto py-16 px-4">
-            <div className="grid md:grid-cols-3 gap-8">
-                
-                {/* Card 1: Book & Wear */}
-                <div className="bg-surface p-8 rounded-xl border border-border flex flex-col text-left hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                    <FaShoppingBag className="text-3xl text-accent mb-5" />
-                    <h3 className="text-2xl font-sans font-bold mb-3 text-primary">Book & Wear</h3>
-                    <p className="text-secondary mb-6 flex-grow">Access a curated collection of high-quality fashion for any event. Why buy when you can borrow?</p>
-                    <a href="#" className="font-bold text-accent self-start hover:underline">
-                        Start Renting →
-                    </a>
-                </div>
-
-                {/* Card 2: Customize */}
-                <div className="bg-surface p-8 rounded-xl border border-border flex flex-col text-left hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                    <FaCut className="text-3xl text-accent mb-5" />
-                    <h3 className="text-2xl font-sans font-bold mb-3 text-primary">Customize</h3>
-                    <p className="text-secondary mb-6 flex-grow">(Coming Soon) Our expert tailoring service will offer alterations to make every piece feel perfectly yours.</p>
-                     <a href="#" className="font-bold text-gray-400 self-start cursor-not-allowed">
-                        Learn More →
-                    </a>
-                </div>
-
-                {/* Card 3: Resell */}
-                <div className="bg-surface p-8 rounded-xl border border-border flex flex-col text-left hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                    <FaTags className="text-3xl text-accent mb-5" />
-                    <h3 className="text-2xl font-sans font-bold mb-3 text-primary">Resell</h3>
-                    <p className="text-secondary mb-6 flex-grow">Turn your unworn items into income. Our White Glove service makes it effortless to list and manage your closet.</p>
-                     <a href="#" className="font-bold text-accent self-start hover:underline">
-                        Become a Partner →
-                    </a>
-                </div>
-
+        <section className="cards-section">
+          <div className="cards-grid">
+            <div className="card">
+              <div className="card-icon">🛍️</div>
+              <h3 className="card-title">Book & Wear</h3>
+              <a href="/rent" className="card-link">Start Renting →</a>
             </div>
+            <div className="card">
+              <div className="card-icon">✂️</div>
+              <h3 className="card-title">Customize</h3>
+              <a href="#" className="card-link" style={{ color: '#AAAAAA', cursor: 'not-allowed' }}>Learn More →</a>
+            </div>
+            <div className="card">
+              <div className="card-icon">🏷️</div>
+              <h3 className="card-title">Resell</h3>
+              <a href="#" className="card-link">Become a Partner →</a>
+            </div>
+          </div>
         </section>
-        
       </main>
-      <Footer />
+
+      <footer className="footer">
+        <p className="footer-text">© {new Date().getFullYear()} ReVibe. All Rights Reserved.</p>
+      </footer>
     </>
   );
 }
