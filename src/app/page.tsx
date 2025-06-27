@@ -1,5 +1,7 @@
 // src/app/page.tsx
-
+"use client";
+import { useState } from "react";
+import Link from 'next/link';
 // This is our CSS. We are writing it directly inside our file.
 const styles = `
   /* --- Global Styles & Font Imports --- */
@@ -186,9 +188,81 @@ const styles = `
     .illustration { display: none; }
     .footer { display: block; }
   }
+  /* Add this CSS at the end of your 'styles' variable, before the last */
+
+  /* --- Customization Options Panel --- */
+    .options-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .options-panel {
+    background-color: var(--surface-color);
+    padding: 32px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color);
+  }
+  .options-close-button {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-color);
+  }
+  .options-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--heading-color);
+    margin: 0 0 24px 0;
+    text-align: center;
+  }
+  .options-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .option-button {
+    width: 100%;
+    text-align: left;
+    padding: 16px;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .option-button:hover {
+    background-color: #e9e9e9;
+    border-color: var(--accent-color);
+  }
+  .option-button strong {
+    color: var(--highlight-color);
+    display: block;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
 `;
 
 export default function PrototypePage() {
+  const [isOptionsVisible, setIsOptionsVisible] = useState(false);
   return (
     <>
       <style>{styles}</style>
@@ -227,7 +301,10 @@ export default function PrototypePage() {
             <div className="card">
               <div className="card-icon">✂️</div>
               <h3 className="card-title">Customize</h3>
-              <a href="#" className="card-link" style={{ color: '#AAAAAA', cursor: 'not-allowed' }}>Learn More →</a>
+               {/* We replaced the <a> tag with this button */}
+              <button onClick={() => setIsOptionsVisible(true)} className="card-link">
+               Start Customizing →
+              </button>
             </div>
             <div className="card">
               <div className="card-icon">🏷️</div>
@@ -241,6 +318,47 @@ export default function PrototypePage() {
       <footer className="footer">
         <p className="footer-text">© {new Date().getFullYear()} ReVibe. All Rights Reserved.</p>
       </footer>
-    </>
+
+    {isOptionsVisible && (
+  <div className="options-overlay">
+    <div className="options-panel">
+      <button
+        onClick={() => setIsOptionsVisible(false)}
+        className="options-close-button"
+      >
+        ×
+      </button>
+      <h3 className="options-title">What would you like to do?</h3>
+      <ul className="options-list">
+        <li>
+          <Link href="/alteration">
+            <button className="option-button">
+              <strong>Alteration</strong>
+              Adjust the fit of your garment.
+            </button>
+          </Link>
+        </li>
+        <li>
+          <Link href="/repair">
+            <button className="option-button">
+              <strong>Repair</strong>
+              Fix a zip, tear, or replace a button.
+            </button>
+          </Link>
+        </li>
+        <li>
+          <Link href="/customize">
+            <button className="option-button">
+              <strong>Customization</strong>
+              Add embroidery, tie-dye, or bandhani.
+            </button>
+          </Link>
+        </li>
+      </ul>
+    </div>
+  </div>
+)}
+
+</>
   );
 }
