@@ -1,4 +1,18 @@
 /* src/app/globals.css */
+
+:root {
+    /* --- The "Warm & Elegant" Palette --- */
+    --bg-color: #f5f2ed;         /* A more prominent, warm beige */
+    --surface-color: #FFFFFF;     /* Clean white for cards */
+    --text-color: #3D3D3D;      /* Soft, dark charcoal */
+    --heading-color: #000000;     /* Black for headings */
+    --accent-color: #e5a9b4;      /* A slightly more saturated, warm pink */
+    --highlight-color: #009B77;  /* Emerald Green */
+    --border-color: #EAEAEA;
+    --illustration-bg: #e9e9e9; /* Grey for the background illustrations */
+  }
+  
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
